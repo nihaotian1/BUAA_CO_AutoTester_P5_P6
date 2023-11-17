@@ -68,7 +68,7 @@ def generate_instruction_P5():
     jumps = []
     for i in range(config['test_size']):
         # first we select write_Instr
-        suit = random.randint(1, 3)
+        suit = random.randint(1, 4)
         rs_write = random.randint(1, 31)
         rt_write = random.randint(1, 31)
         rd_write = random.randint(1, 31)
@@ -85,9 +85,12 @@ def generate_instruction_P5():
                 continue
             else:
                 pc += 4
-        else:  # jal()
+        elif suit == 3:  # jal()
             pc += 4
             write_ins = select_from_write_5()
+        elif suit == 4:
+            pc += 4
+            write_ins = lui(rd_write)
 
         buffer.append(write_ins)
 
@@ -160,7 +163,7 @@ def generate_instruction_P5():
                     jumps.append(label1)
                     jumps.append(substr)
 
-                    continue
+                    break
 
                 rt = rd
                 rd = random.randint(1, 31)
@@ -176,7 +179,7 @@ def generate_instruction_P6():
     std = 0
     for i in range(config['test_size']):
         # first we select write_Instr
-        suit = random.randint(1, 5)
+        suit = random.randint(1, 6)
         rs_write = random.randint(1, 31)
         rt_write = random.randint(1, 31)
         rd_write = random.randint(1, 31)
@@ -224,9 +227,12 @@ def generate_instruction_P6():
                 continue
             else:
                 pc += 4
-        else:  # jal()
+        elif suit == 5:  # jal()
             pc += 4
             write_ins = select_from_write_5()
+        elif suit == 6:
+            pc += 4
+            write_ins = lui(rd_write)
 
         buffer.append(write_ins)
 
@@ -235,11 +241,11 @@ def generate_instruction_P6():
             jumpstr = "jump%d:\n" % (config['jump_num'] - 1)
             jumps.append(jumpstr)
             rs = 31
-            rt = random.randint(1, 31)
+            rt = random.randint(1, 30)
             rd = random.randint(1, 30)  # mustn't write $31
             pc += 4  # add pc for db
             for j in range(2):  # we wish rd in last epoch use as rt in this epoch
-                read_op = random.randint(1, 4)  # don't generate beq/bne
+                read_op = random.randint(1, 4)  # don't generate beq/bne in db
                 if read_op == 1:
                     for k in range(100):  # check if is nop
                         read_ins = select_from_read_1(rs, rt, rd)  # may be nop\n
@@ -286,7 +292,7 @@ def generate_instruction_P6():
 
                 if read_op == 1:
                     for k in range(20):  # check if is nop
-                        read_ins = select_from_read_1(rs, rt, rd) # may be nop\n
+                        read_ins = select_from_read_1(rs, rt, rd)  # may be nop\n
                         if write_ins != "nop\n":
                             break
                     buffer.append(read_ins)
@@ -295,7 +301,7 @@ def generate_instruction_P6():
                     buffer.append(read_ins)
                 elif read_op == 3:
                     for k in range(20):  # check if is nop
-                        read_ins = select_from_read_3(rs, rt, rd) # may be nop\n
+                        read_ins = select_from_read_3(rs, rt, rd)  # may be nop\n
                         if write_ins != "nop\n":
                             break
                     buffer.append(read_ins)
@@ -303,7 +309,6 @@ def generate_instruction_P6():
                     read_ins = select_from_read_4(rs, rt, rd)
                     buffer.append(read_ins)
                 else:  # Instr we might get beq/bne, nop is inside beq/bne func
-
                     pc += 4  # extra add pc for db
 
                     read_ins = select_from_read_5(rs, rt, rd)
@@ -319,7 +324,7 @@ def generate_instruction_P6():
                     jumps.append(label1)
                     jumps.append(substr)
 
-                    continue  # just jump out of this group
+                    break  # just jump out of this group
 
                 rt = rd
                 rd = random.randint(1, 31)
@@ -419,7 +424,7 @@ def select_from_read_1(rs, rt, rd):  # both use rs and rt -- mem
     if config['Project'] == 5:
         op = 2
     else:
-        op = random.randint(0, 5)
+        op = random.randint(0, 11)
 
     if op == 0:
         return sb(rs, rt)
@@ -431,8 +436,20 @@ def select_from_read_1(rs, rt, rd):  # both use rs and rt -- mem
         return sb(rt, rs)
     elif op == 4:
         return sh(rt, rs)
-    else:
+    elif op == 5:
         return sw(rt, rs)
+    elif op == 6:
+        return sb(rs, rd)
+    elif op == 7:
+        return sh(rs, rd)
+    elif op == 8:
+        return sw(rs, rd)
+    elif op == 9:
+        return sb(rd, rs)
+    elif op == 10:
+        return sh(rd, rs)
+    else:
+        return sw(rd, rs)
 
 
 def select_from_read_2(rs, rt, rd):  # slt/sltu
@@ -447,13 +464,13 @@ def select_from_read_3(rs, rt, rd):  # add sub and or addi andi ori lb lh lw sb 
     if config['Project'] == 5:
         op = random.randint(0, 5)
     else:
-        op = random.randint(0, 15)  # ensure we use rs
+        op = random.randint(0, 22)  # ensure we use rs
     if op == 0:
         return add(rs, rt, rd)
     elif op == 1:
         return sub(rs, rt, rd)
     elif op == 2:
-        return ori(rs, rt)
+        return ori(rs, rd)
     elif op == 3:
         return sw(rs, rt)
     elif op == 4:
@@ -480,6 +497,20 @@ def select_from_read_3(rs, rt, rd):  # add sub and or addi andi ori lb lh lw sb 
         return sb(rt, rs)
     elif op == 15:
         return sh(rt, rs)
+    elif op == 16:
+        return sb(rd, rs)
+    elif op == 17:
+        return sh(rd, rs)
+    elif op == 18:
+        return sb(rs, rd)
+    elif op == 19:
+        return sh(rs, rd)
+    elif op == 20:
+        return lb(rs, rd)
+    elif op == 21:
+        return lh(rs, rd)
+    elif op == 22:
+        return lw(rs, rd)
 
 
 def select_from_read_4(rs, rt, rd):  # mthi mtlo mult multu div divu

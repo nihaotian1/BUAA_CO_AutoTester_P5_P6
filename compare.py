@@ -1,7 +1,7 @@
 # -*- coding:utf-8 -*-
 import os
 
-pathIsm = "D:\\CO\\CO_P5\\pipelineCPU\\res.txt"  #  将res.txt前的路径改为你搭建的cpu的工程路径
+pathIsm = "D:\\CO\\CO_P5\\pipelineCPU\\res.txt"   # 将res.txt前的路径改为你搭建的cpu的工程路径
 pathMars = "log.txt"
 
 ise_log = []
