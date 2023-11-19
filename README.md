@@ -16,33 +16,25 @@ Anaconda 23.1.0
 或者修改`myParser.py`文件中对应设置
 
 # 准备
-在顶层模块中写好对MIPS的tb文件，并命名为tb.v
+1. 在项目目录中写好mips.v与对MIPS的tb文件
 
-在工程文件夹中加入文件mips.tcl文件，写入
-```
-run 20000ns;
-exit
-```
+2. 将此测试程序目录放在项目目录之下
 
-文件层次结构:
-```
---dir
-----mips.v
-----mips.tcl
-----mips.prj
-----CO_AutoTester
-------run.sh
-------...
-----ALU.v
-----...
-```
+    文件层次结构:
+    ```
+    --project_dir
+    ----mips.v
+    ----mips.tcl
+    ----mips.prj
+    ----CO_AutoTester
+    ------run.sh
+    ------...
+    ----ALU.v
+    ----...
+    ```
 
-修改下列文件中所有绝对路径
-```
-compare.py
-runISE.py
-run.sh
-```
+3. 修改runISE.py中的xilinxPath
+
 # 运行
 命令行`run.sh`即可，你将获得本次生成机器码为`code.txt`，如果你按照`run.sh`内注释进行了修改，你将在`compare.txt`内看到本次运行结果
 

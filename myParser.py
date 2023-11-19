@@ -17,3 +17,10 @@ def prepare_parser():
                         help="the type of test Ins")
 
     return vars(parser.parse_args())
+
+def prjPath_parser():
+    parser = ArgumentParser(description="adaptable_command_generator")
+
+    parser.add_argument("--prjPath", default="../", type=str, help="dir of mips project")
+    
+    return vars(parser.parse_args())

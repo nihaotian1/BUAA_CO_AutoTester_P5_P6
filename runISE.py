@@ -1,7 +1,9 @@
 # -*- coding:utf-8 -*-
+import myParser
 import os
 
-projectPath = "/mnt/d/co/p6/mips"      # 你创建的cpu的工程路径
+config=myParser.prjPath_parser()
+projectPath=config["prjPath"]    # 你创建的cpu的工程路径，已自动识别
 xilinxPath = "/opt/Xilinx/14.7/ISE_DS/ISE/"  # 你的下载的ISE的路径
 
 os.chdir(projectPath)

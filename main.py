@@ -1,7 +1,6 @@
 import myParser
 import os
-import myParser
-import os
+
 from instruction_set import generate_instruction
 # -*- coding:utf-8 -*-
 

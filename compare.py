@@ -1,7 +1,11 @@
 # -*- coding:utf-8 -*-
+import myParser
 import os
 
-pathIsm = "/mnt/d/co/p6/mips/res.txt"   # 将res.txt前的路径改为你搭建的cpu的工程路径
+config=myParser.prjPath_parser()
+prjPath=config["prjPath"]
+
+pathIsm = f"{prjPath}/res.txt"   # 将res.txt前的路径改为你搭建的cpu的工程路径
 pathMars = "log.txt"
 
 ise_log = []
@@ -40,10 +44,13 @@ with open("compare.txt", "w") as file:
     for i in range(length - 1):
         fail=cmp(i)
         if fail:
-            print("We expect %s, but we got %s" % (mars_log[i], ise_log[i]))
-            file.write("We expect %s, but we got %s\n" % (mars_log[i], ise_log[i]))
+            fail_msg="We expect %s, but we got %s" % (mars_log[i], ise_log[i])
+            print(fail_msg)
+            file.write(fail_msg)
             flag = 1
 
     if flag == 0:
-        file.write("valid logNum:%d\nwe find no bug in this epoch!" % length)
+        success_msg="valid logNum:%d\nwe find no bug in this epoch!" % length
+        print(success_msg)
+        file.write(success_msg)
 
