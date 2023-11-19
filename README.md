@@ -16,7 +16,7 @@ Anaconda 23.1.0
 或者修改`myParser.py`文件中对应设置
 
 # 准备
-1. 在项目目录中写好mips.v与对MIPS的tb文件
+1. 在项目目录中写好mips.v与tb文件
 
 2. 将此测试程序目录放在项目目录之下
 
@@ -33,10 +33,13 @@ Anaconda 23.1.0
     ----...
     ```
 
-3. 修改runISE.py中的xilinxPath
+3. 修改`runISE.py`中的`xilinxPath`和`tb_module_name`，注意`tb_module_name`是模块名而不是文件名
 
 # 运行
-命令行`run.sh`即可，你将获得本次生成机器码为`code.txt`，如果你按照`run.sh`内注释进行了修改，你将在`compare.txt`内看到本次运行结果
+```.bash
+./run.sh
+```
+你将获得本次生成机器码为`code.txt`，如果你按照`run.sh`内注释进行了修改，你将在`compare.txt`内看到本次运行结果
 
 # 获取 & 声明
 基于Toby学长的Mars进行的模拟，Mars.jar文件已在当前repo中
