@@ -2,8 +2,8 @@
 import myParser
 import os
 
-config=myParser.prjPath_parser()
-prjPath=config["prjPath"]
+config = myParser.prjPath_parser()
+prjPath = config["prjPath"]
 
 pathIsm = f"{prjPath}/res.txt"   # 将res.txt前的路径改为你搭建的cpu的工程路径
 pathMars = "log.txt"
@@ -29,15 +29,36 @@ with open(pathIsm, "r") as file:
 
 length = min(len(mars_log), len(ise_log))
 
+def arrange(length):
+    for i in range(length - 1):
+        mars_str = mars_log[i]
+        for j in range(len(mars_str)):
+            if mars_str[j] == ':':
+                mars_str = mars_str[:j]
+                break
+        ise_str = ise_log[i]
+        for j in range(len(ise_str)):
+            if ise_str[j] == ':':
+                ise_str = ise_str[:j]
+                break
+
+        if ise_str != mars_str:  # need to change pos of ise_log[i]
+            str = ise_log[i]
+            ise_log[i] = ise_log[i + 1]
+            ise_log[i + 1] = str
+
+
 def cmp(i):
-    fail=1
+    fail = 1
     if ise_log[i] == mars_log[i]:
-        fail=0
-    if mars_log[i][11] == '*' and i>0 and ise_log[i] == mars_log[i-1]:
-        fail=0
-    if ise_log[i][11] == '*' and i<length-1 and ise_log[i] == mars_log[i+1]:
-        fail=0
+        fail = 0
+    if mars_log[i][11] == '*' and i > 0 and ise_log[i] == mars_log[i-1]:
+        fail = 0
+    if ise_log[i][11] == '*' and i < length - 1 and ise_log[i] == mars_log[i+1]:
+        fail = 0
     return fail
+
+arrange(length)
 
 with open("compare.txt", "w") as file:
     flag = 0

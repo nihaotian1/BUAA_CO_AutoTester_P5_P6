@@ -21,6 +21,6 @@ def prepare_parser():
 def prjPath_parser():
     parser = ArgumentParser(description="adaptable_command_generator")
 
-    parser.add_argument("--prjPath", default="../", type=str, help="dir of mips project")
+    parser.add_argument("--prjPath", default="D:\\CO\\CO_P6\\CO_P6", type=str, help="dir of mips project")
     
     return vars(parser.parse_args())
